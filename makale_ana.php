@@ -2,9 +2,7 @@
 session_start();
 //error_reporting(0);
 include "vt_baglan.php";
-$kul_adi = htmlentities($_SESSION['kullanici'], ENT_QUOTES, "UTF-8");
 ?>
-
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="tr">
@@ -58,10 +56,10 @@ body,td,th {
 <div class="main-box">
   <div class="container">
   <br />  <br />  <br />  <br />
-  <div>
+  <div class="inside">
    <?php 
         if (isset($_SESSION['kullanici'])) {      
-            echo "   <table width=\"223\" height=\"39\"><tr><td>
+            echo "   <table width=\"223\"><tr><td>
                         <form name=\"form2\" method=\"post\" action=\"makale_paylas.php\">
                         <input type=\"submit\"  value=\"Yeni Makale Ekleme\" /></form></td></tr>
                      </table>";  
@@ -91,7 +89,7 @@ body,td,th {
                 $sql="SELECT * FROM makale order by zaman DESC  LIMIT $baslangic,$limit";
                 $sonuc=$vt->query($sql);
                 $toplam=ceil($satirsayisi[0]/$limit);
-
+                echo " <table border=1>\r\n";
                 while($satir = $sonuc->fetch_assoc())
                 {
                     $makale_id  = $satir["makale_id"];      
@@ -106,24 +104,22 @@ body,td,th {
                     $zamanyaz      = htmlentities($satir["zaman"],ENT_QUOTES,'utf-8');
                     $yol = $satir['yol'];
                     $yolyaz        = htmlentities($satir["yol"], ENT_QUOTES, 'UTF-8');
-                    echo " <table border=1>";
-                    echo "<tr width=\"80%\"><td>Paylaşan</td><td>$yukleyenyaz</td></tr>"."<br>"."<br>"."<br>";
-                    echo "<tr width=\"500\"><td>Konu</td><td>$konuyaz</td></tr><br>";
-                    echo "<tr width=\"500\"><td>Ozeti</td><td>$ozetyaz</td></tr><br>";
-                    echo "<tr width=\"500\"><td>Makale</td><td><a href='$yol'>indir</a></td></tr><br>";
-                    echo "<tr width=\"500\"><td>Paylaşım Tarihi</td></a><td>$zaman</td></tr><br>";
-                    echo "<form method='POST' action='makale_oku.php?makale_id=$makale_id'>";
-                    echo "<input type=\"hidden\" name=\"yol\"        value='$yol'  >";
-                    echo "<input type=\"hidden\" name=\"yukleyen\"   value='$yukleyen'  >";
-                    echo "<input type=\"hidden\" name=\"konu\"       value='$konu'     >";
-                    echo "<input type=\"hidden\" name=\"ozet\"       value='$ozet'     >";
-                    echo "<input type=\"hidden\" name=\"zaman\"      value='$zaman'    >";
-                    echo "<tr><td></td><td><input type=\"submit\" value=\"detay\"></td></tr>";
-                    echo "</form>";
-                    echo "</table>";
-                    echo "<br>"; 
+                    echo "<tr height='80'><td>Paylaşan</td><td>$yukleyenyaz</td></tr>\r\n";
+                    echo "<tr><td>Konu</td><td>$konuyaz</td></tr>\r\n";
+                    echo "<tr><td>Ozeti</td><td>$ozetyaz</td></tr>\r\n";
+                    echo "<tr><td>Makale</td><td><a href='$yol'>indir</a></td></tr>\r\n";
+                    echo "<tr><td>Paylaşım Tarihi</td><td>$zaman</td></tr>\r\n";
+                    echo "<tr><td></td><td>";
+                    echo "<form method='POST' action='makale_oku.php?makale_id=$makale_id'>\r\n";
+                    echo "<input type=\"hidden\" name=\"yol\"        value='$yol'  >\r\n";
+                    echo "<input type=\"hidden\" name=\"yukleyen\"   value='$yukleyen'  >\r\n";
+                    echo "<input type=\"hidden\" name=\"konu\"       value='$konu'     >\r\n";
+                    echo "<input type=\"hidden\" name=\"zaman\"      value='$zaman'    >\r\n";
+                    echo "<input type=\"submit\" value=\"detay\">";
+                    echo "</form>\r\n";
+                    echo "</td></tr>\r\n";
                 }
-
+                echo "</table>\r\n";
 if(!empty($sekme))
 {
    if($sekme>1)
@@ -131,7 +127,7 @@ if(!empty($sekme))
         echo "<a href=\"makale_ana.php?sekme= $sekme-1 \" >Geri </a>";
        }   
     for ($i=1; $i<=$toplam; $i++) {
-        echo " <a href=\"makale_ana.php?&sekme=$i\" ";
+        echo " <a href=\"makale_ana.php?sekme=$i\" ";
         if ($i==$sekme) {
             echo "class=\"selected\"";
         }
@@ -144,15 +140,10 @@ if(!empty($sekme))
 
 }?>
 
-
-
-  
-  </h2>
   </div>
   
     </div>
   </div>
-</div>
 <footer>
   <div class="container">
     <div class="footerlink">

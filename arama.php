@@ -1,6 +1,6 @@
 <?php
 session_start();
-error_reporting(0);
+//error_reporting(0);
 include "vt_baglan.php";
 ?>
 
@@ -67,12 +67,13 @@ include "vt_baglan.php";
 
     if($baslik!=null)
     {
+        $baslik = $vt->real_escape_string($baslik);
         $sql="SELECT * FROM makale WHERE konu like'%$baslik%' order by zaman DESC ";
         $sonuc=$vt->query($sql);
         while($satir = $sonuc->fetch_assoc())
             {
                 $makale_id  = $satir["makale_id"];      
-                $makale_idyaz  = htmlentities($satir["makele_id"], ENT_QUOTES, 'UTF-8');
+                $makale_idyaz  = htmlentities($satir["makale_id"], ENT_QUOTES, 'UTF-8');
                 $yukleyen = $satir['yukleyen'];
                 $yukleyenyaz   = htmlentities($satir['yukleyen'], ENT_QUOTES, "UTF-8");
                 $konu = $satir['konu'];
@@ -84,14 +85,13 @@ include "vt_baglan.php";
                 $yol = $satir['yol'];
                 $yolyaz        = htmlentities($satir["yol"], ENT_QUOTES, 'UTF-8');
                 echo " <table border=1>";
-                echo "<tr width=\"80%\"><td>Paylaşan</td><td>$yukleyenyaz</td></tr>"."<br>"."<br>"."<br>";
-                echo "<tr width=\"500\"><td>Konu</td><td>$konuyaz</td></tr><br>";
-                echo "<tr width=\"500\"><td>Ozeti</td><td>$ozetyaz</td></tr><br>";
-                echo "<tr width=\"500\"><td>Makale</td><td><a href='$yol'>indir</a></td></tr><br>";
-                echo "<tr width=\"500\"><td>Paylaşım Tarihi</td></a><td>$zaman</td></tr><br>";
+                echo "<tr width=\"80%\"><td>Paylaşan</td><td>$yukleyenyaz</td></tr>";
+                echo "<tr width=\"500\"><td>Konu</td><td>$konuyaz</td></tr>";
+                echo "<tr width=\"500\"><td>Ozeti</td><td>$ozetyaz</td></tr>";
+                echo "<tr width=\"500\"><td>Makale</td><td><a href='$yol'>indir</a></td></tr>";
+                echo "<tr width=\"500\"><td>Paylaşım Tarihi</td></a><td>$zaman</td></tr>";
                 echo "<tr><td></td><td><a href='makale_oku.php?makale_id=$makale_id'>Detay</a></td></tr>";
                 echo "</table>";
-                echo "<br>"; 
             }
     }
 

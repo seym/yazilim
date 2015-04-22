@@ -1,4 +1,5 @@
 ﻿<?php
+session_start();
 //error_reporting(0);
 ?>
 
@@ -115,7 +116,7 @@ $(function () {
               </tr>
               <tr>
                 <td>İkinci Adınız</td>
-                <td><input type="text" name="ad2" required></td>
+                <td><input type="text" name="ad2"></td>
               </tr>              
               <tr>
                 <td>Soyad</td>

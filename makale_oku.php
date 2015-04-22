@@ -59,7 +59,7 @@ include ("fonksiyonlar.inc"); //MesajUyari fonksiyonuna bağlantı
     //diğer bilgileri veri tabanından okutuyor, gönderilmemişse bir uyarı veriyor. 
     if (isset($_GET["makale_id"])) {
         include ("vt_baglan.php");
-        $makale_id = $_GET["makale_id"];
+        $makale_id = $vt->real_escape_string($_GET["makale_id"]);
         $sql="SELECT * FROM makale WHERE makale_id = '$makale_id'";
         $sonuc=$vt->query($sql);
         if ($sonuc->num_rows > 0) {
@@ -88,8 +88,8 @@ include ("fonksiyonlar.inc"); //MesajUyari fonksiyonuna bağlantı
                 <?php 
                 if (isset($_SESSION['kullanici'])) {  ?>
                     <form action="yorumla.php" method="POST">
-                        <input name="makale_id" type="hidden" value="<?php echo $makale_id ?>" />
-                        <input name="yol" type="hidden" value="<?php echo $yol ?>" />
+                        <input name="makale_id" type="hidden" value="<?php echo $makale_id; ?>"/>
+                        <input name="yol" type="hidden" value="<?php echo $yol; ?>" />
                         <textarea name="yorum" cols="80" rows="5"></textarea>
                         <input type="submit" name="yorumlama" value="Gönder">
                     </form>
@@ -106,6 +106,7 @@ include ("fonksiyonlar.inc"); //MesajUyari fonksiyonuna bağlantı
                 // Makalenin ortalama puanını gösterelim. 
                 $sql="SELECT AVG(puan) as ortpuan FROM puan where makale=$makale_id";
                 $sonuc=$vt->query($sql);
+                if ($vt->error) {echo $vt->error;}
                 $satir = $sonuc->fetch_assoc();
                 $ortpuan    = $satir["ortpuan"];
                 echo "Ortalama Puan:".$ortpuan; 
@@ -167,9 +168,10 @@ include ("fonksiyonlar.inc"); //MesajUyari fonksiyonuna bağlantı
                 <?php
                     if (isset($_SESSION['kullanici']) AND $_SESSION['kullanici']==$yorumyazan) {
                         echo '<form action="yorumsil.php" method="post">';
-                        echo "<input type=\"hidden\" name=\"makale_id\" value=\"$makale_id?\">";
+                        echo "<input type=\"hidden\" name=\"makale_id\" value=\"$makale_id\">";
+                        echo "<input type=\"hidden\" name=\"tarih\" value=\"$tarih\">";
                         echo '<input type="submit" value="sil"></form>';
-                    } else { echo "Sil"; }
+                    } else { echo "&nbsp;&nbsp;&nbsp;"; }
                 ?>                     
               </td>
             </tr>

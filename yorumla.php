@@ -5,9 +5,9 @@ include "vt_baglan.php";
 include "fonksiyonlar.inc";
 		
 $kullanici_adi=$_SESSION['kullanici'];
-$metin = $_POST["yorum"];
-$makale_id = $_POST["makale_id"];
-if ($makale_id!=null And $kullanici_adi!=null) {
+$metin = $vt->real_escape_string($_POST["yorum"]);
+$makale_id = $vt->real_escape_string($_POST["makale_id"]);
+if ($makale_id!=null and $kullanici_adi!=null) {
     $sql="INSERT INTO yorum(yapan,makale,yorum) VALUES ('$kullanici_adi','$makale_id','$metin')";
     if($vt->query($sql) === false) 
     {
